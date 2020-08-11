@@ -1083,18 +1083,18 @@ type PHYSICAL_MONITOR struct {
 }
 
 type MENUITEMINFO struct {
-	Size         uint32
-	Mask         uint32
-	Type         uint32
-	State        uint32
-	ID           uint32
-	SubMenu      HMENU
-	BmpChecked   HBITMAP
-	BmpUnChecked HBITMAP
-	ItemData     uintptr
-	TypeData     uintptr // UTF-16 string
-	CCH          uint32
-	BmpItem      HBITMAP
+	Size              uint32
+	Mask              uint32
+	Type              uint32
+	State             uint32
+	ID                uint32
+	SubMenu           HMENU
+	BmpChecked        HBITMAP
+	BmpUnChecked      HBITMAP
+	ItemData          uintptr
+	TypeData          uintptr // UTF-16 string
+	ItemTextCharCount uint32
+	BmpItem           HBITMAP
 }
 
 type TPMPARAMS struct {
@@ -1237,43 +1237,4 @@ type STORAGE_PROPERTY_QUERY struct {
 	PropertyId           uint32
 	QueryType            uint32
 	AdditionalParameters [1]byte
-}
-
-// https://docs.microsoft.com/en-us/windows/desktop/api/fileapi/ns-fileapi-_win32_find_stream_data
-type WIN32_FIND_STREAM_DATA struct {
-	Size int64
-	Name [MAX_PATH + 36]uint16
-}
-
-type MSGBOXPARAMS struct {
-	Size           uint32
-	Owner          HWND
-	Instance       HINSTANCE
-	Text           *uint16
-	Caption        *uint16
-	Style          uint32
-	Icon           *uint16
-	ContextHelpId  *uint32
-	MsgBoxCallback uintptr
-	LanguageId     uint32
-}
-
-type POWERBROADCAST_SETTING struct {
-	PowerSetting GUID
-	DataLength   uint32
-	Data         [1]byte
-}
-
-type RTL_OSVERSIONINFOEXW struct {
-	OSVersionInfoSize uint32
-	MajorVersion      uint32
-	MinorVersion      uint32
-	BuildNumber       uint32
-	PlatformId        uint32
-	CSDVersion        [128]uint16
-	ServicePackMajor  uint16
-	ServicePackMinor  uint16
-	SuiteMask         uint16
-	ProductType       byte
-	Reserved          byte
 }
