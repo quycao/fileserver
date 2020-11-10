@@ -152,7 +152,8 @@ func uploadFileHandler(uploadPath string) http.HandlerFunc {
 			// return
 		}
 
-		fileName := fileHeader.Filename
+		// fileName := fileHeader.Filename
+		fileName := filepath.Base(fileHeader.Filename)
 		_, err = mime.ExtensionsByType(detectedFileType)
 		if err != nil {
 			renderError(w, "CANT_READ_FILE_TYPE", http.StatusInternalServerError)
