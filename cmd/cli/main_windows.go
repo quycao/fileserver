@@ -1,4 +1,4 @@
-// +build window
+// +build windows
 
 package main
 
@@ -47,7 +47,7 @@ func main() {
 
 	// Set default port, path and hide console window option
 	hide := "N"
-	hideAfter := 5
+	delay := 5
 	port := 9000
 	path, err := os.Getwd()
 	if err != nil {
@@ -99,7 +99,7 @@ func main() {
 				delay = *fdelay
 			} else {
 				fmt.Print("This console window will be hide after (seconds)? ")
-				fmt.Scanln(&hideAfter)
+				fmt.Scanln(&delay)
 			}
 		}
 	}
@@ -116,7 +116,7 @@ func main() {
 	http.HandleFunc("/upload", uploadFileHandler(fullUploadPath))
 
 	if runtime.GOOS == "windows" && hide == "Y" && delay >= 0 {
-		time.Sleep(delay * 1000)
+		time.Sleep(time.Duration(delay * 1000) * time.Second)
 		hideConsole()
 	}
 
