@@ -21,22 +21,24 @@ const uploadPath = "uploads"
 
 func main() {
 	// Get current IP address
-	var currentIP = "localhost"
-	var addrs, err = net.InterfaceAddrs()
-	if err != nil {
-		log.Println("Cannot get server IP")
-		log.Println(err)
-	}
+	// var currentIP = "localhost"
+	// var addrs, err = net.InterfaceAddrs()
+	// if err != nil {
+	// 	log.Println("Cannot get server IP")
+	// 	log.Println(err)
+	// }
 
-	for _, address := range addrs {
-		// check the address type and if it is not a loopback the display it
-		// = GET LOCAL IP ADDRESS
-		if ipnet, ok := address.(*net.IPNet); ok && !ipnet.IP.IsLoopback() {
-			if ipnet.IP.To4() != nil {
-				currentIP = ipnet.IP.String()
-			}
-		}
-	}
+	// for _, address := range addrs {
+	// 	// check the address type and if it is not a loopback the display it
+	// 	// = GET LOCAL IP ADDRESS
+	// 	if ipnet, ok := address.(*net.IPNet); ok && !ipnet.IP.IsLoopback() {
+	// 		if ipnet.IP.To4() != nil {
+	// 			currentIP = ipnet.IP.String()
+	// 		}
+	// 	}
+	// }
+
+	currentIP := GetLocalIP()
 
 	// Usage doc
 	// fmt.Printf("Usage: file_server.exe -path=\"file_path\" -port=port_number\n")
@@ -95,6 +97,21 @@ func main() {
 		log.Println(err)
 		pauseProcess()
 	}
+}
+
+func GetLocalIP() string {
+    // 8.8.8.8 is used as a destination to determine the local route. 
+    // The port (:80) doesn't matter, and no data is sent.
+    conn, err := net.Dial("udp", "8.8.8.8:80")
+    if err != nil {
+        // Fallback for isolated environments with no network stack
+        return "127.0.0.1"
+    }
+    defer conn.Close()
+
+    localAddr := conn.LocalAddr().(*net.UDPAddr)
+
+    return localAddr.IP.String()
 }
 
 func uploadFileHandler(uploadPath string) http.HandlerFunc {
